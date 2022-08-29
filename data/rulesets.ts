@@ -115,7 +115,6 @@ export const Rulesets: {[k: string]: FormatData} = {
 			'Obtainable', 'Team Preview', 'Species Clause', 'Nickname Clause', 'OHKO Clause',
 			'Evasion Moves Clause', 'Gravity Sleep Clause', 'Endless Battle Clause',
 			'HP Percentage Mod', 'Cancel Mod', '+Unobtainable', '+Past', '+PastMove', 'Sketch Gen 8 Moves',
-			'Adjust Level Down = 100', 'Max Level = 120'
 		],
 	},
 	standardoms: {
@@ -139,7 +138,6 @@ export const Rulesets: {[k: string]: FormatData} = {
 		desc: "The standard ruleset for all National Dex tiers",
 		ruleset: [
 			'Obtainable', '+Unobtainable', '+Past', 'Sketch Gen 8 Moves', '+PastMove', 'Team Preview', 'Nickname Clause', 'HP Percentage Mod', 'Cancel Mod', 'Endless Battle Clause',
-			'Adjust Level Down = 100', 'Max Level = 120'
 		],
 		onValidateSet(set) {
 			// These Pokemon are still unobtainable
@@ -590,7 +588,7 @@ export const Rulesets: {[k: string]: FormatData} = {
 		effectType: 'ValidatorRule',
 		name: 'Level 120',
 		desc: "Allows Pokémon up to Level 120.",
-		ruleset: ['!Adjust Level Down', 'Default Level = 120', 'Overflow Stat Mod'],
+		ruleset: ['Max Level = 120', 'Default Level = 120', 'Overflow Stat Mod'],
 	},
 	blitz: {
 		effectType: 'Rule',

@@ -29,25 +29,25 @@ export const Formats: FormatList = [
 		name: "[Gen 8] National Dex Draft",
 
 		mod: 'gen8',
-		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', 'Team Preview', 'Dynamax Clause'],
+		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', 'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120', 'Default Level = 100'],
 	},
 	{
 		name: "[Gen 8] National Dex Legacy",
 
 		mod: 'gen8',
-		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', '+PastMove', 'Team Preview', 'Dynamax Clause'],
+		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', '+PastMove', 'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120', 'Default Level = 100'],
 	},
 	{
 		name: "[Gen 8] National Dex Leaks Draft",
 
 		mod: 'gen8leaks',
-		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', 'Team Preview', 'Dynamax Clause'],
+		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', 'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120', 'Default Level = 100'],
 	},
 	{
 		name: "[Gen 8] National Dex Leaks Legacy",
 
 		mod: 'gen8leaks',
-		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', '+PastMove', 'Team Preview', 'Dynamax Clause'],
+		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', '+PastMove', 'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120', 'Default Level = 100'],
 	},
 	{
 		name: "[Gen 8] NatDex LC National Dex Draft",
@@ -86,7 +86,7 @@ export const Formats: FormatList = [
     rated: false,
     ruleset: [
         'Max Team Size = 4', 'Picked Team Size = 3', 'Obtainable', 'Draft', '+Unreleased', '+Past',
-		'Team Preview', 'Dynamax Clause', 'Adjust Level Down = 100', 'Max Level = 120',
+				'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120',
     ],
 	},
 	{
@@ -98,7 +98,7 @@ export const Formats: FormatList = [
     rated: false,
     ruleset: [
         'Max Team Size = 4', 'Picked Team Size = 3', 'Obtainable', 'Draft', '+Unreleased', '+Past', '+PastMove',
-		'Team Preview', 'Dynamax Clause', 'Adjust Level Down = 100', 'Max Level = 120',
+				'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120',
     ],
 	},
 	{
@@ -155,8 +155,8 @@ export const Formats: FormatList = [
 		name: "[Gen 8] NatDex OU",
 		mod: 'gen8',
 		ruleset: [
-			'Standard NatDex', 'Ban Unbalanced Moves', 'Dynamax Clause', 'OHKO Clause',
-			'Evasion Moves Clause', 'Species Clause', 'Sleep Clause Mod', 'Z-Move Clause'
+			'Standard NatDex', 'Ban Unbalanced Moves', 'Dynamax Clause', 'OHKO Clause', 'Max Level = 120',
+			'Evasion Moves Clause', 'Species Clause', 'Sleep Clause Mod', 'Z-Move Clause', 'Adjust Level = 100',
 		],
 		banlist: [
 			'Uber', 'AG', 'Arena Trap', 'Moody', 'Power Construct', 'Sand Veil', 'Shadow Tag', 'Snow Cloak',
@@ -179,8 +179,8 @@ export const Formats: FormatList = [
 
 		mod: 'gen8',
 		ruleset: [
-			'Standard NatDex', 'Ban Unbalanced Moves', 'Dynamax Clause', 'OHKO Clause',
-			'Evasion Moves Clause', 'Species Clause', 'Sleep Clause Mod', 'Z-Move Clause',
+			'Standard NatDex', 'Ban Unbalanced Moves', 'Dynamax Clause', 'OHKO Clause', 'Max Level = 120',
+			'Evasion Moves Clause', 'Species Clause', 'Sleep Clause Mod', 'Z-Move Clause', 'Adjust Level = 100',
 		],
 		banlist: ['AG', 'Shadow Tag', 'Baton Pass'],
 	},
@@ -322,14 +322,14 @@ export const Formats: FormatList = [
 		name: "[Gen 8] NatDex Doubles OU",
 		mod: 'gen8',
 		gameType: 'doubles',
-		ruleset: ['Standard NatDex Doubles', 'Dynamax Clause', 'Swagger Clause', 'Z-Move Clause'],
+		ruleset: ['Standard NatDex Doubles', 'Dynamax Clause', 'Swagger Clause', 'Z-Move Clause', 'Max Level = 120', 'Adjust Level = 100'],
 		banlist: ['DUber', 'Power Construct', 'Shadow Tag'],
 	},
 	{
 		name: "[Gen 8] NatDex Doubles Ubers",
 		mod: 'gen8',
 		gameType: 'doubles',
-		ruleset: ['Standard NatDex Doubles', '!Gravity Sleep Clause', 'Z-Move Clause'],
+		ruleset: ['Standard NatDex Doubles', '!Gravity Sleep Clause', 'Z-Move Clause', 'Max Level = 120', 'Adjust Level = 100'],
 		banlist: [],
 	},
 	{
@@ -469,20 +469,17 @@ export const Formats: FormatList = [
 	{
 		name: "[Gen 8] Level 120 NatDex OU",
 		mod: 'gen8',
-		battle: {trunc: Math.trunc}, //Disables the overflow 'glitch' without capping the stats like Overflow Stat Mod does.
-		ruleset: ['[Gen 8] NatDex OU', 'Level 120', '!Overflow Stat Mod'],
+		ruleset: ['[Gen 8] NatDex OU', 'Level 120'],
 	},
 	{
 		name: "[Gen 8] Level 120 NatDex UU",
 		mod: 'gen8',
-		battle: {trunc: Math.trunc}, //Disables the overflow 'glitch' without capping the stats like Overflow Stat Mod does.
-		ruleset: ['[Gen 8] NatDex UU', 'Level 120', '!Overflow Stat Mod'],
+		ruleset: ['[Gen 8] NatDex UU', 'Level 120'],
 	},
 	{
 		name: "[Gen 8] Level 120 NatDex AG",
 		mod: 'gen8',
-		battle: {trunc: Math.trunc}, //Disables the overflow 'glitch' without capping the stats like Overflow Stat Mod does.
-		ruleset: ['[Gen 8] NatDex Anything Goes', 'Level 120', '!Overflow Stat Mod'],
+		ruleset: ['[Gen 8] NatDex Anything Goes', 'Level 120'],
 	},
 
 	// Pet Mods
