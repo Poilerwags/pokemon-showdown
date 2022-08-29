@@ -1618,7 +1618,6 @@ export class BattleActions {
 			defBoosts = 0;
 		}
 
-		if (move.isFutureMove && !source.isActive && move.recentForme) attacker.setSpecies(move.recentForme);
 		let attack = attacker.calculateStat(attackStat, atkBoosts);
 		let defense = defender.calculateStat(defenseStat, defBoosts);
 

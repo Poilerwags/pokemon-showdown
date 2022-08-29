@@ -19,6 +19,7 @@ const MUTE_DURATION = 7 * 60 * 1000;
 const DAY = 24 * 60 * 60 * 1000;
 const STAFF_NOTIF_INTERVAL = 10 * 60 * 1000;
 const MAX_MODLOG_TIME = 2 * 365 * DAY;
+const NON_PUNISHMENTS = ['MUTE', 'REPORT'];
 const NOJOIN_COMMAND_WHITELIST: {[k: string]: string} = {
 	'lock': '/lock',
 	'weeklock': '/weeklock',
@@ -286,7 +287,7 @@ export async function runActions(user: User, room: GameRoom, message: string, re
 	}
 	if (recommended.length) {
 		Utils.sortBy(recommended, ([punishment]) => -PUNISHMENTS.indexOf(punishment));
-		if (recommended.every(k => k[2])) {
+		if (recommended.filter(k => !NON_PUNISHMENTS.includes(k[1])).every(k => k[2])) {
 			// requiresPunishment is for upgrading. if every one is an upgrade and
 			// there's no independent punishment, do not upgrade it
 			return;
@@ -300,7 +301,7 @@ export async function runActions(user: User, room: GameRoom, message: string, re
 		if (user.trusted) {
 			// force just logging for any sort of punishment. requested by staff
 			Rooms.get('staff')?.add(
-				`|c|&|/log [Artemis] <<${room.roomid}>> ${punishment} recommended for trusted user ${user.id}` +
+				`|c|&|/log [Artemis] ${getViewLink(room.roomid)} ${punishment} recommended for trusted user ${user.id}` +
 				`${user.trusted !== user.id ? ` [${user.trusted}]` : ''} `
 			).update();
 			return; // we want nothing else to be executed. staff want trusted users to be reviewed manually for now
@@ -357,20 +358,11 @@ function globalModlog(
 	});
 }
 
+const getViewLink = (roomid: RoomID) => `<<view-battlechat-${roomid.replace('battle-', '')}>>`;
+
 function addGlobalModAction(message: string, room: GameRoom) {
 	room.add(`|c|&|/log ${message}`).update();
-	Rooms.get(`staff`)?.add(`|c|&|/log <<${room.roomid}>> ${message}`).update();
-}
-
-function addLogButton(room: Room) {
-	const staff = Rooms.get('staff');
-	if (staff) {
-		staff.add(
-			`|c|&|/raw <button class="button" name="send" value="/msgroom staff,/gbc ${room.roomid}">` +
-			`View logs</button>`
-		);
-		staff.update();
-	}
+	Rooms.get(`staff`)?.add(`|c|&|/log ${getViewLink(room.roomid)} ${message}`).update();
 }
 
 const DISCLAIMER = (
@@ -382,9 +374,8 @@ const DISCLAIMER = (
 export async function lock(user: User, room: GameRoom, reason: string, isWeek?: boolean) {
 	if (settings.recommendOnly) {
 		Rooms.get('staff')?.add(
-			`|c|&|/log [Artemis] <<${room.roomid}>> ${isWeek ? "WEEK" : ""}LOCK recommended for ${user.id}`
+			`|c|&|/log [Artemis] ${getViewLink(room.roomid)} ${isWeek ? "WEEK" : ""}LOCK recommended for ${user.id}`
 		).update();
-		addLogButton(room);
 		room.hideText([user.id], undefined, true);
 		return false;
 	}
@@ -405,7 +396,6 @@ export async function lock(user: User, room: GameRoom, reason: string, isWeek?: 
 			`locked alts: ${affected.slice(1).map(curUser => curUser.getLastName()).join(", ")})`
 		);
 	}
-	addLogButton(room);
 	room.add(`|c|&|/raw ${DISCLAIMER}`).update();
 	room.hideText(affected.map(f => f.id), undefined, true);
 	let message = `|popup||html|${user.name} has locked you from talking in chats, battles, and PMing regular users`;
@@ -437,6 +427,20 @@ type PunishmentHandler = (
 
 /** Keep this in descending order of severity */
 const punishmentHandlers: Record<string, PunishmentHandler> = {
+	report(user, room) {
+		for (const k in room.users) {
+			if (k === user.id) continue;
+			const u = room.users[k];
+			if (room.auth.get(u) !== Users.PLAYER_SYMBOL) continue;
+			u.sendTo(
+				room.roomid,
+				`|c|&|/uhtml report,` +
+				`Toxicity has been automatically detected in this battle, ` +
+				`please click below if you would like to report it.<br />` +
+				`<a class="button notifying" href="/view-help-request">Make a report</a>`
+			);
+		}
+	},
 	mute(user, room) {
 		const roomMutes = muted.get(room) || new WeakMap();
 		if (!user.trusted) {
@@ -453,7 +457,10 @@ const punishmentHandlers: Record<string, PunishmentHandler> = {
 		}
 		globalModlog('WARN', user, reason, room);
 		addGlobalModAction(`${user.name} was warned by Artemis (${reason})`, room);
-		addLogButton(room);
+		const punishments = punishmentCache.get(user) || {};
+		if (!punishments['WARN']) punishments['WARN'] = 0;
+		punishments['WARN']++;
+		punishmentCache.set(user, punishments);
 
 		room.add(`|c|&|/raw ${DISCLAIMER}`).update();
 		room.hideText([user.id], undefined, true);
@@ -532,9 +539,12 @@ export const chatfilter: Chat.ChatFilter = function (message, user, room) {
 
 	const roomid = room.roomid;
 	void (async () => {
+		message = message.replace(pokemonRegex, '[Pokemon]');
+
 		for (const k in settings.replacements) {
 			message = message.replace(new RegExp(k, 'gi'), settings.replacements[k]);
 		}
+
 		const response = await classifier.classify(message);
 		const {score, flags, main} = makeScore(roomid, response || {});
 		if (score) {
@@ -646,6 +656,10 @@ function saveSettings(path?: string) {
 function saveReviews() {
 	FS(`config/chat-plugins/artemis-reviews.json`).writeUpdate(() => JSON.stringify(reviews));
 }
+
+export const pokemonRegex = new RegExp( // we want only base formes and existent stuff
+	`\\b(${Dex.species.all().filter(s => !s.forme && s.num > 0).map(f => f.id).join('|')})\\b`, 'gi'
+);
 
 export let lastLogTime: number = Chat.oldPlugins['abuse-monitor']?.lastLogTime || 0;
 
@@ -780,7 +794,7 @@ export const commands: Chat.ChatCommands = {
 			target = target.trim();
 			if (!target) return this.parse(`/help abusemonitor`);
 			const [text, scoreText] = Utils.splitFirst(target, ',').map(f => f.trim());
-			const args = Chat.parseArguments(scoreText, ',', '=', false);
+			const args = Chat.parseArguments(scoreText, ',', {useIDs: false});
 			const scores: Record<string, number> = {};
 			for (let k in args) {
 				const vals = args[k];
@@ -1154,6 +1168,32 @@ export const commands: Chat.ChatCommands = {
 				`|html|Punishment ${num + 1}: <code>` +
 				`${visualizePunishment(punishment).replace(/: /g, ' = ')}</code>`
 			);
+		},
+		changeall(target, room, user) {
+			checkAccess(this);
+			const [to, from] = target.split(',').map(f => toID(f));
+			if (!(to && from)) {
+				return this.errorReply(`Specify a type to change and a type to change to.`);
+			}
+			if (![to, from].every(f => punishmentHandlers[f])) {
+				return this.errorReply(
+					`Invalid types given. Valid types: ${Object.keys(punishmentHandlers).join(', ')}.`
+				);
+			}
+			const changed = [];
+			for (const [i, punishment] of settings.punishments.entries()) {
+				if (toID(punishment.type) === to) {
+					punishment.type = from.toUpperCase();
+					changed.push(i + 1);
+				}
+			}
+			if (!changed.length) {
+				return this.errorReply(`No punishments of type '${to}' found.`);
+			}
+			this.sendReply(`Updated punishment(s) ${changed.join(', ')}`);
+			this.privateGlobalModAction(`${user.name} updated all abuse-monitor punishments of type ${to} to type ${from}`);
+			saveSettings();
+			this.globalModlog(`ABUSEMONITOR CHANGEALL`, null, `${to} to ${from}`);
 		},
 		ep: 'exportpunishments', // exports punishment settings to something easily copy/pastable
 		exportpunishments() {
@@ -1566,7 +1606,7 @@ export const commands: Chat.ChatCommands = {
 			review.resolved = {
 				by: user.id,
 				time: Date.now(),
-				details: result || "",
+				details: result,
 				result: isAccurate,
 			};
 			displayResolved(review, true);
@@ -2103,14 +2143,16 @@ export const pages: Chat.PageTable = {
 		reviews() {
 			checkAccess(this);
 			this.title = `[Abuse Monitor] Reviews`;
-			let buf = `<div class="pad"><h2>Artemis recommendation reviews</h2>`;
+			let buf = `<div class="pad"><h2>Artemis recommendation reviews ({{total}})</h2>`;
 			buf += `<button class="button" name="send" value="/msgroom staff,/am reviews">Reload reviews</button>`;
 			buf += `<hr />`;
+			let total = 0;
 			let atLeastOne = false;
 			for (const userid in reviews) {
 				const curReviews = reviews[userid].filter(f => !f.resolved);
 				if (curReviews.length) {
 					buf += `<strong>${Chat.count(curReviews, 'reviews')} from ${userid}:</strong><hr />`;
+					total += curReviews.length;
 				} else {
 					continue;
 				}
@@ -2134,6 +2176,7 @@ export const pages: Chat.PageTable = {
 				buf += `No reviews to display.`;
 				return buf;
 			}
+			buf = buf.replace('{{total}}', `${total}`);
 			return buf;
 		},
 		review() {
@@ -2154,6 +2197,33 @@ export const pages: Chat.PageTable = {
 			buf += `</form>`;
 			return buf;
 		},
+	},
+	async battlechat(query) {
+		const [format, num, pw] = query.map(toID);
+		this.checkCan('lock');
+		if (!format || !num) {
+			return this.errorReply(`Invalid battle link provided.`);
+		}
+		this.title = `[Battle Logs] ${format}-${num}`;
+		const full = `battle-${format}-${num}${pw ? `-${pw}` : ""}`;
+		const logData = await getBattleLog(full);
+		if (!logData) {
+			return this.errorReply(`No logs found for the battle <code>${full}</code>.`);
+		}
+		let log = logData.log;
+		log = log.filter(l => l.startsWith('|c|'));
+
+		let buf = '<div class="pad">';
+		buf += `<h2>Logs for <a href="/${full}">${logData.title}</a></h2>`;
+		buf += `Players: ${Object.values(logData.players).map(toID).filter(Boolean).join(', ')}<hr />`;
+		let atLeastOne = false;
+		for (const line of log) {
+			const [,, username, message] = Utils.splitFirst(line, '|', 3);
+			buf += Utils.html`<div class="chat"><span class="username"><username>${username}:</username></span> ${message}</div>`;
+			atLeastOne = true;
+		}
+		if (!atLeastOne) buf += `None found.`;
+		return buf;
 	},
 };
 

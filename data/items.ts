@@ -4064,11 +4064,11 @@ export const Items: {[itemid: string]: ItemData} = {
 		spritenum: 287,
 		onModifyDefPriority: 2,
 		onModifyDef(def, pokemon) {
-			if (pokemon.species.name === 'Ditto' && !pokemon.transformed) {
+			if ((pokemon.species.name === 'Ditto' || pokemon.species.name === 'Ditto-Delta') && !pokemon.transformed) {
 				return this.chainModify(2);
 			}
 		},
-		itemUser: ["Ditto"],
+		itemUser: ["Ditto", "Ditto-Delta"],
 		num: 257,
 		gen: 2,
 	},
@@ -5092,11 +5092,11 @@ export const Items: {[itemid: string]: ItemData} = {
 			basePower: 10,
 		},
 		onModifySpe(spe, pokemon) {
-			if (pokemon.species.name === 'Ditto' && !pokemon.transformed) {
+			if ((pokemon.species.name === 'Ditto' || pokemon.species.name === 'Ditto-Delta') && !pokemon.transformed) {
 				return this.chainModify(2);
 			}
 		},
-		itemUser: ["Ditto"],
+		itemUser: ["Ditto", "Ditto-Delta"],
 		num: 274,
 		gen: 4,
 	},

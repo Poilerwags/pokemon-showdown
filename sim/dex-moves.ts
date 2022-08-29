@@ -327,7 +327,6 @@ export interface ActiveMove extends MutableMove {
 	willChangeForme?: boolean;
 	willChangeFormeDelta?: boolean;
 	infiltrates?: boolean;
-	recentForme: Species;
 
 	/**
 	 * Has this move been boosted by a Z-crystal or used by a Dynamax Pokemon? Usually the same as

@@ -3574,7 +3574,6 @@ export const Moves: {[moveid: string]: MoveData} = {
 					effectType: 'Move',
 					isFutureMove: true,
 					type: 'Steel',
-					recentForme: source.species,
 				},
 			});
 			if (periodic && target.side.addSlotCondition(target, 'futuremoveperiodic')) {
@@ -6093,7 +6092,6 @@ export const Moves: {[moveid: string]: MoveData} = {
 					effectType: 'Move',
 					isFutureMove: true,
 					type: 'Psychic',
-					recentForme: source.species,
 				},
 			});
 			if (periodic && target.side.addSlotCondition(target, 'futuremoveperiodic')) {
