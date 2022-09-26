@@ -219,6 +219,13 @@ describe('Team Validator', function () {
 		illegal = TeamValidator.get('gen4ou').validateTeam(team);
 		assert(illegal);
 
+		// Shedinja has a different Egg Group (Mineral) than Nincada (Bug); needs to use Nincada's Egg Group
+		team = [
+			{species: 'shedinja', ability: 'wonderguard', moves: ['silverwind', 'gust'], evs: {hp: 1}},
+		];
+		illegal = TeamValidator.get('gen3ou').validateTeam(team);
+		assert.equal(illegal, null);
+
 		// Chansey can't have Chansey-only egg moves as well as Happiny-only level-up moves
 
 		team = [
@@ -761,6 +768,15 @@ describe('Team Validator', function () {
 			{species: 'zamazenta', ability: 'dauntlessshield', item: 'lifeorb', moves: ['howl'], evs: {hp: 1}},
 		];
 		illegal = TeamValidator.get('gen8almostanyability').validateTeam(team);
+		assert(illegal);
+	});
+
+	it('should prevent Pokemon that don\'t evolve via level-up and evolve from a Pokemon that does evolve via level-up from being underleveled.', function () {
+		const team = [
+			{species: 'nidoking', level: 1, ability: 'sheerforce', moves: ['earthpower'], evs: {hp: 1}},
+			{species: 'mamoswine', level: 1, ability: 'oblivious', moves: ['earthquake'], evs: {hp: 1}},
+		];
+		const illegal = TeamValidator.get('gen8anythinggoes').validateTeam(team);
 		assert(illegal);
 	});
 

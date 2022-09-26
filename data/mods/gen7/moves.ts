@@ -130,7 +130,7 @@ export const Moves: {[k: string]: ModdedMoveData} = {
 			const removeTarget = [
 				'reflect', 'lightscreen', 'auroraveil', 'safeguard', 'mist', 'spikes', 'toxicspikes', 'stealthrock', 'stickyweb',
 			];
-			const removeAll = ['spikes', 'toxicspikes', 'stealthrock', 'stickyweb'];
+			const removeAll = ['spikes', 'toxicspikes', 'livewire', 'permafrost', 'stealthrock', 'stealthcoal', 'stickyweb'];
 			for (const targetCondition of removeTarget) {
 				if (target.side.removeSideCondition(targetCondition)) {
 					if (!removeAll.includes(targetCondition)) continue;

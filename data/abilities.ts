@@ -470,7 +470,9 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 			if (move.category === 'Status') return;
 			if (move.type === 'Fire') {
 				this.boost({spa: 1, atk: 1, spe: 1}, attacker);
-				attacker.formeChange('Emolga-Delta-Fired');
+				if (attacker.species.id === 'emolgadelta') {
+					attacker.formeChange('Emolga-Delta-Fired');
+				}
 			}
 		},
 		onDamagingHit(damage, target, source, move) {
@@ -3438,6 +3440,9 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 	},
 	proteanmaxima: {
 		onAfterMega(pokemon) {
+			if (!pokemon.baseSpecies.id.includes('eeveemega') || !pokemon.species.id.includes('eeveemega')) {
+				return;
+			}
 			const action = this.queue.willMove(pokemon);
 			if (!action) return;
 			const move = this.dex.getActiveMove(action.move.id);
@@ -3470,6 +3475,9 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 		},
 
 		onBeforeTurn(pokemon) {
+			if (!pokemon.baseSpecies.id.includes('eeveemega') || !pokemon.species.id.includes('eeveemega')) {
+				return;
+			}
 			const action = this.queue.willMove(pokemon);
 			if (!action) return;
 			const move = this.dex.getActiveMove(action.move.id);
@@ -3502,6 +3510,9 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 		},
 
 		onTryHit(target, source, move) {
+			if (!target.baseSpecies.id.includes('eeveemega') || !target.species.id.includes('eeveemega')) {
+				return;
+			}
 			if (target.types[0] === 'Water') {
 				if (target !== source && move.type === 'Water') {
 					if (!this.heal(target.baseMaxhp / 4)) {
@@ -3539,6 +3550,9 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 			}
 		},
 		onAllyTryHitSide(target, source, move) {
+			if (!target.baseSpecies.id.includes('eeveemega') || !target.species.id.includes('eeveemega')) {
+				return;
+			}
 			if (target.types[0] !== 'Psychic') return;
 			if (target.side === source.side || move.hasBounced || !move.flags['reflectable']) {
 				return;
@@ -3550,6 +3564,9 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 			return null;
 		},
 		onAfterSetStatus(status, target, source, effect) {
+			if (!target.baseSpecies.id.includes('eeveemega') || !target.species.id.includes('eeveemega')) {
+				return;
+			}
 			if (target.types[0] !== 'Dark') return;
 			if (!source || source === target) return;
 			if (effect && effect.id === 'toxicspikes') return;
@@ -3560,17 +3577,26 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 			source.trySetStatus(status, target, {status: status.id, id: 'synchronize'} as Effect);
 		},
 		onModifySpe(spe, pokemon) {
+			if (!pokemon.baseSpecies.id.includes('eeveemega') || !pokemon.species.id.includes('eeveemega')) {
+				return;
+			}
 			if (pokemon.types[0] !== 'Grass') return;
 			if (['sunnyday', 'desolateland'].includes(pokemon.effectiveWeather())) {
 				return this.chainModify(2);
 			}
 		},
 		onImmunity(type, pokemon) {
+			if (!pokemon.baseSpecies.id.includes('eeveemega') || !pokemon.species.id.includes('eeveemega')) {
+				return;
+			}
 			if (pokemon.types[0] !== 'Ice') return;
 			if (type === 'hail') return false;
 		},
 		onModifyAccuracyPriority: 8,
 		onModifyAccuracy(accuracy, pokemon) {
+			if (!pokemon.baseSpecies.id.includes('eeveemega') || !pokemon.species.id.includes('eeveemega')) {
+				return;
+			}
 			if (pokemon.types[0] !== 'Ice') return;
 			if (typeof accuracy !== 'number') return;
 			if (this.field.isWeather('hail')) {
@@ -3579,6 +3605,9 @@ export const Abilities: {[abilityid: string]: AbilityData} = {
 			}
 		},
 		onDamagingHit(damage, target, source, move) {
+			if (!target.baseSpecies.id.includes('eeveemega') || !target.species.id.includes('eeveemega')) {
+				return;
+			}
 			if (target.types[0] !== 'Fairy') return;
 			if (this.checkMoveMakesContact(move, source, target)) {
 				if (this.randomChance(3, 10)) {
