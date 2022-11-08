@@ -29,25 +29,25 @@ export const Formats: FormatList = [
 		name: "[Gen 8] National Dex Draft",
 
 		mod: 'gen8',
-		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', 'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120', 'Default Level = 100'],
+		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', 'Team Preview', 'Dynamax Clause'],
 	},
 	{
 		name: "[Gen 8] National Dex Legacy",
 
 		mod: 'gen8',
-		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', '+PastMove', 'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120', 'Default Level = 100'],
+		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', '+PastMove', 'Team Preview', 'Dynamax Clause'],
 	},
 	{
 		name: "[Gen 8] National Dex Leaks Draft",
 
 		mod: 'gen8leaks',
-		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', 'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120', 'Default Level = 100'],
+		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', 'Team Preview', 'Dynamax Clause'],
 	},
 	{
 		name: "[Gen 8] National Dex Leaks Legacy",
 
 		mod: 'gen8leaks',
-		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', '+PastMove', 'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120', 'Default Level = 100'],
+		ruleset: ['Obtainable', 'Draft', '+Unreleased', '+Past', '+PastMove', 'Team Preview', 'Dynamax Clause'],
 	},
 	{
 		name: "[Gen 8] National Dex Unrestricted",
@@ -92,7 +92,7 @@ export const Formats: FormatList = [
     rated: false,
     ruleset: [
         'Max Team Size = 4', 'Picked Team Size = 3', 'Obtainable', 'Draft', '+Unreleased', '+Past',
-				'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120',
+		'Team Preview', 'Dynamax Clause', 'Adjust Level Down = 100', 'Max Level = 120',
     ],
 	},
 	{
@@ -104,7 +104,7 @@ export const Formats: FormatList = [
     rated: false,
     ruleset: [
         'Max Team Size = 4', 'Picked Team Size = 3', 'Obtainable', 'Draft', '+Unreleased', '+Past', '+PastMove',
-				'Team Preview', 'Dynamax Clause', 'Adjust Level = 100', 'Max Level = 120',
+		'Team Preview', 'Dynamax Clause', 'Adjust Level Down = 100', 'Max Level = 120',
     ],
 	},
 	{
@@ -161,8 +161,8 @@ export const Formats: FormatList = [
 		name: "[Gen 8] NatDex OU",
 		mod: 'gen8',
 		ruleset: [
-			'Standard NatDex', 'Ban Unbalanced Moves', 'Dynamax Clause', 'OHKO Clause', 'Max Level = 120',
-			'Evasion Moves Clause', 'Species Clause', 'Sleep Clause Mod', 'Z-Move Clause', 'Adjust Level = 100',
+			'Standard NatDex', 'Level 120 Events', 'Ban Unbalanced Moves', 'Dynamax Clause', 'OHKO Clause',
+			'Evasion Moves Clause', 'Species Clause', 'Sleep Clause Mod', 'Z-Move Clause'
 		],
 		banlist: [
 			'Uber', 'AG', 'Arena Trap', 'Moody', 'Power Construct', 'Sand Veil', 'Shadow Tag', 'Snow Cloak',
@@ -185,8 +185,8 @@ export const Formats: FormatList = [
 
 		mod: 'gen8',
 		ruleset: [
-			'Standard NatDex', 'Ban Unbalanced Moves', 'Dynamax Clause', 'OHKO Clause', 'Max Level = 120',
-			'Evasion Moves Clause', 'Species Clause', 'Sleep Clause Mod', 'Z-Move Clause', 'Adjust Level = 100',
+			'Standard NatDex', 'Level 120 Events', 'Ban Unbalanced Moves', 'Dynamax Clause', 'OHKO Clause',
+			'Evasion Moves Clause', 'Species Clause', 'Sleep Clause Mod', 'Z-Move Clause'
 		],
 		banlist: ['AG', 'Shadow Tag', 'Baton Pass'],
 	},
@@ -227,7 +227,7 @@ export const Formats: FormatList = [
 		name: "[Gen 8] NatDex Monotype",
 		desc: `All the Pok&eacute;mon on a team must share a type.`,
 		mod: 'gen8',
-		ruleset: ['Same Type Clause', 'Standard NatDex', 'Ban Unbalanced Moves', 'Dynamax Clause', 'OHKO Clause', 'Evasion Moves Clause', 'Species Clause', 'Sleep Clause Mod', 'Z-Move Clause'],
+		ruleset: ['Same Type Clause', 'Standard NatDex', 'Level 120 Events', 'Ban Unbalanced Moves', 'Dynamax Clause', 'OHKO Clause', 'Evasion Moves Clause', 'Species Clause', 'Sleep Clause Mod', 'Z-Move Clause'],
 		banlist: [
 			'Blaziken', 'Calyrex-Ice', 'Calyrex-Shadow', 'Dialga', 'Dracovish', 'Eternatus', 'Genesect', 'Giratina', 'Giratina-Origin', 'Groudon', 'Ho-Oh',
 			'Kartana', 'Kyogre', 'Kyurem-Black', 'Kyurem-White', 'Landorus-Base', 'Lugia', 'Lunala', 'Magearna', 'Marshadow', 'Mewtwo', 'Naganadel',
@@ -259,7 +259,7 @@ export const Formats: FormatList = [
 	{
 		name: "[Gen 8] NatDex Anything Goes",
 		mod: 'gen8',
-		ruleset: ['Standard NatDex'],
+		ruleset: ['Standard NatDex', 'Level 120 Events'],
 	},
 	{
 		name: "[Gen 8] NatDex ZU",
@@ -328,14 +328,14 @@ export const Formats: FormatList = [
 		name: "[Gen 8] NatDex Doubles OU",
 		mod: 'gen8',
 		gameType: 'doubles',
-		ruleset: ['Standard NatDex Doubles', 'Dynamax Clause', 'Swagger Clause', 'Z-Move Clause', 'Max Level = 120', 'Adjust Level = 100'],
+		ruleset: ['Standard NatDex Doubles', 'Level 120 Events', 'Dynamax Clause', 'Swagger Clause', 'Z-Move Clause'],
 		banlist: ['DUber', 'Power Construct', 'Shadow Tag'],
 	},
 	{
 		name: "[Gen 8] NatDex Doubles Ubers",
 		mod: 'gen8',
 		gameType: 'doubles',
-		ruleset: ['Standard NatDex Doubles', '!Gravity Sleep Clause', 'Z-Move Clause', 'Max Level = 120', 'Adjust Level = 100'],
+		ruleset: ['Standard NatDex Doubles', 'Level 120 Events', '!Gravity Sleep Clause', 'Z-Move Clause'],
 		banlist: [],
 	},
 	{
@@ -451,7 +451,7 @@ export const Formats: FormatList = [
     rated: false,
     ruleset: [
         'Max Team Size = 4', 'Picked Team Size = 3',
-        'Standard NatDex', 'Species Clause', 'Sleep Clause Mod', 'Dynamax Clause',
+        'Standard NatDex', 'Level 120 Events', 'Species Clause', 'Sleep Clause Mod', 'Dynamax Clause',
     ],
 	},
 	{
@@ -475,17 +475,17 @@ export const Formats: FormatList = [
 	{
 		name: "[Gen 8] Level 120 NatDex OU",
 		mod: 'gen8',
-		ruleset: ['[Gen 8] NatDex OU', 'Level 120'],
+		ruleset: ['[Gen 8] NatDex OU', '!Level 120 Events', 'Level 120'],
 	},
 	{
 		name: "[Gen 8] Level 120 NatDex UU",
 		mod: 'gen8',
-		ruleset: ['[Gen 8] NatDex UU', 'Level 120'],
+		ruleset: ['[Gen 8] NatDex UU', '!Level 120 Events', 'Level 120'],
 	},
 	{
 		name: "[Gen 8] Level 120 NatDex AG",
 		mod: 'gen8',
-		ruleset: ['[Gen 8] NatDex Anything Goes', 'Level 120'],
+		ruleset: ['[Gen 8] NatDex Anything Goes', '!Level 120 Events', 'Level 120'],
 	},
 
 	// Pet Mods
@@ -501,7 +501,7 @@ export const Formats: FormatList = [
 			`&bullet; <a href="https://www.smogon.com/forums/threads/3658587/">National Dex Balanced Hackmons</a>`,
 		],
 		mod: 'gen8',
-		ruleset: ['-Nonexistent', 'Standard NatDex', 'Forme Clause', 'Sleep Moves Clause', '2 Ability Clause', 'OHKO Clause', 'Evasion Moves Clause', 'Dynamax Clause', 'CFZ Clause', '!Obtainable'],
+		ruleset: ['-Nonexistent', 'Standard NatDex', 'Level 120 Events', 'Forme Clause', 'Sleep Moves Clause', '2 Ability Clause', 'OHKO Clause', 'Evasion Moves Clause', 'Dynamax Clause', 'CFZ Clause', '!Obtainable'],
 		banlist: [
 			// Pokemon
 			'Eternatus-Eternamax', 'Groudon-Primal', 'Rayquaza-Mega', 'Shedinja', 'Cramorant-Gorging', 'Calyrex-Shadow', 'Darmanitan-Galar-Zen',
